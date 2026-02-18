@@ -27,7 +27,7 @@ jobs:
         run: npm run lint
 
       - name: Run Unit Tests & Coverage
-        run: npm run test:coverage
+        run: npm run test:ci
 
       - name: Build Application
         run: npm run build
