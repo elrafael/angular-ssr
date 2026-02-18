@@ -1,8 +1,8 @@
 import { ComponentFixture, DeferBlockState, TestBed } from '@angular/core/testing';
-import { Posts } from './posts';
 import { of } from 'rxjs';
 import { PostsService } from '../../services/posts-service';
 import { Post } from '../../shared/interfaces/post';
+import { Posts } from './posts';
 
 describe('Posts', () => {
   let component: Posts;
@@ -47,10 +47,40 @@ describe('Posts', () => {
     }
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    const postTitles = compiled.querySelectorAll('h3');
+    const postTitles = compiled.querySelectorAll('h2');
 
     expect(postTitles.length).toBe(2);
-    expect(postTitles[0].textContent).toBe('Post 1');
-    expect(postTitles[1].textContent).toBe('Post 2');
+    expect(postTitles[0].textContent?.trim()).toBe('Post 1');
+    expect(postTitles[1].textContent?.trim()).toBe('Post 2');
+  });
+
+  it('should render 6 skeleton cards during placeholder state', async () => {
+    const deferBlocks = await fixture.getDeferBlocks();
+
+    await deferBlocks[0].render(DeferBlockState.Placeholder);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    const skeletons = compiled.querySelectorAll('.animate-pulse');
+
+    expect(skeletons.length).toBe(6);
+  });
+
+  it('should show empty state message when service returns no posts', async () => {
+    TestBed.resetTestingModule();
+
+    await TestBed.configureTestingModule({
+      imports: [Posts],
+      providers: [{ provide: PostsService, useValue: { getPosts: () => of([]) } }],
+    }).compileComponents();
+
+    const emptyFixture = TestBed.createComponent(Posts);
+    emptyFixture.detectChanges();
+
+    const deferBlocks = await emptyFixture.getDeferBlocks();
+    await deferBlocks[0].render(DeferBlockState.Complete);
+    emptyFixture.detectChanges();
+
+    expect(emptyFixture.nativeElement.textContent).toContain('No posts available');
   });
 });
