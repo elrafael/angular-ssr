@@ -1,0 +1,14 @@
+<h2>Posts</h2>
+
+@defer (on timer(3000ms)) {
+  @for (post of posts(); track post.id) {
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.body }}</p>
+  } @empty {
+    <p>No posts available.</p>
+  }
+} @placeholder {
+  <p>Loading posts...</p>
+} @error {
+  <p>Failed to load posts.</p>
+}
