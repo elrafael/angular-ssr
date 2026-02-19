@@ -30,11 +30,44 @@ app.get('/api/posts', async (req, res) => {
     const response = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=' + limit);
     const data = await response.json();
 
-    res.setHeader('X-Powered-By', 'Angular SSR');
     res.status(200).json(data);
   } catch (error) {
     console.error('Error fetching posts:', error);
     res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
+app.get('/api/posts/:id', async (req, res) => {
+  try {
+    const id = req.params['id'];
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts/' + id);
+    const data = await response.json();
+
+    res.status(200).json(data);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Failed to fetch post' });
+  }
+});
+app.get('/api/users/:id', async (req, res) => {
+  try {
+    const id = req.params['id'];
+    const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    res.status(500).json({ error: 'Failed to fetch user' });
+  }
+});
+app.get('/api/posts/:id/comments', async (req, res) => {
+  try {
+    const id = req.params['id'];
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`);
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    res.status(500).json({ error: 'Failed to fetch comments' });
   }
 });
 
