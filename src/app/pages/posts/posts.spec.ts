@@ -3,14 +3,25 @@ import { of, throwError } from 'rxjs';
 import { PostsService } from '../../services/posts-service';
 import { Post } from '../../shared/interfaces/post';
 import { Posts } from './posts';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 describe('Posts', () => {
   let component: Posts;
   let fixture: ComponentFixture<Posts>;
 
-  const mockPosts = [
-    { id: 1, title: 'Post 1', body: 'This is the first post.' },
-    { id: 2, title: 'Post 2', body: 'This is the second post.' },
+  const mockPosts: Post[] = [
+    {
+      id: 1,
+      title: 'Post 1',
+      body: 'This is the first post.',
+      userId: '',
+    },
+    {
+      id: 2,
+      title: 'Post 2',
+      body: 'This is the second post.',
+      userId: '',
+    },
   ];
 
   const postsServiceMock = {
@@ -20,7 +31,10 @@ describe('Posts', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Posts],
-      providers: [{ provide: PostsService, useValue: postsServiceMock }],
+      providers: [
+        { provide: PostsService, useValue: postsServiceMock },
+        provideRouter([], withComponentInputBinding()),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Posts);
@@ -45,6 +59,7 @@ describe('Posts', () => {
     if (deferBlocks.length > 0) {
       await deferBlocks[0].render(DeferBlockState.Complete);
     }
+    await fixture.whenStable();
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     const postTitles = compiled.querySelectorAll('h2');
