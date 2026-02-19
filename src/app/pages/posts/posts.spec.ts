@@ -1,5 +1,5 @@
 import { ComponentFixture, DeferBlockState, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { PostsService } from '../../services/posts-service';
 import { Post } from '../../shared/interfaces/post';
 import { Posts } from './posts';
@@ -82,5 +82,32 @@ describe('Posts', () => {
     emptyFixture.detectChanges();
 
     expect(emptyFixture.nativeElement.textContent).toContain('No posts available');
+  });
+  it('should render error state when service fails', async () => {
+    TestBed.resetTestingModule();
+
+    await TestBed.configureTestingModule({
+      imports: [Posts],
+      providers: [
+        {
+          provide: PostsService,
+          useValue: { getPosts: () => throwError(() => new Error('Simulated API Failure')) },
+        },
+      ],
+    }).compileComponents();
+
+    const errorFixture = TestBed.createComponent(Posts);
+    errorFixture.detectChanges();
+
+    const deferBlocks = await errorFixture.getDeferBlocks();
+
+    await deferBlocks[0].render(DeferBlockState.Error);
+    errorFixture.detectChanges();
+
+    const compiled = errorFixture.nativeElement as HTMLElement;
+    const errorMessage = compiled.querySelector('.text-red-700');
+
+    expect(errorMessage?.textContent).toContain('Failed to load posts');
+    expect(compiled.innerHTML).toContain('bg-red-50');
   });
 });
