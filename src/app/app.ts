@@ -8,5 +8,9 @@ import { RouterOutlet, RouterLinkWithHref, RouterLinkActive } from '@angular/rou
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('angular-ssr');
+  protected readonly isMenuOpen = signal(false);
+
+  toggleMenu(): void {
+    this.isMenuOpen.update((isOpen) => !isOpen);
+  }
 }
