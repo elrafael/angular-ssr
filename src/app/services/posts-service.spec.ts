@@ -10,8 +10,18 @@ describe('PostsService', () => {
   let httpMock: HttpTestingController;
 
   const mockPosts: Post[] = [
-    { id: 1, title: 'Post 1', body: 'This is the first post.' },
-    { id: 2, title: 'Post 2', body: 'This is the second post.' },
+    {
+      id: 1,
+      title: 'Post 1',
+      body: 'This is the first post.',
+      userId: '',
+    },
+    {
+      id: 2,
+      title: 'Post 2',
+      body: 'This is the second post.',
+      userId: '',
+    },
   ];
 
   beforeEach(() => {
