@@ -2,7 +2,8 @@
   <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight mb-8">Posts</h1>
 
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    @defer (on timer(3000ms)) {
+    <!-- @defer { -->
+    @defer (on timer(1000ms)) {
       @for (post of posts(); track post.id) {
         <article
           [style.animation-delay]="$index * 100 + 'ms'"
