@@ -14,7 +14,7 @@ export class Photos {
   private readonly photosService = inject(PhotosService);
   readonly id = input.required<string>(); // Se usares withComponentInputBinding()
   protected photos = toSignal(
-    toObservable(this.id).pipe(switchMap((id) => this.photosService.getPhotos(Number(id)))),
+    toObservable(this.id).pipe(switchMap((id) => this.photosService.getPhotos(id))),
   );
 
   readonly albumTitle = signal<string>('Carregando álbum...');
