@@ -33,6 +33,13 @@
           >
             Todos
           </a>
+          <a
+            routerLink="/albums"
+            routerLinkActive="bg-blue-50 text-blue-700"
+            class="px-3 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+          >
+            Albums
+          </a>
         </div>
       </div>
 
@@ -85,6 +92,12 @@
           (click)="toggleMenu()"
           class="block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:bg-slate-50"
           >Todos</a
+        >
+        <a
+          routerLink="/albums"
+          (click)="toggleMenu()"
+          class="block px-3 py-2 rounded-md text-base font-medium text-slate-600 hover:bg-slate-50"
+          >Albums</a
         >
       </div>
     </div>
