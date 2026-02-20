@@ -1,0 +1,56 @@
+<div class="min-h-screen bg-white p-4 md:p-8">
+  <div class="max-w-7xl mx-auto mb-10">
+    <button
+      [routerLink]="['/albums']"
+      class="flex items-center text-slate-500 hover:text-blue-600 transition-colors mb-6 group"
+    >
+      <svg
+        class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Voltar aos Álbuns
+    </button>
+
+    <h1
+      class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight first-letter:uppercase"
+    >
+      {{ albumTitle() }}
+    </h1>
+    <p class="text-slate-500 mt-2">Total de {{ photos()?.length }} memórias guardadas</p>
+  </div>
+
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      @for (photo of photos(); track photo.id) {
+        <div
+          class="group relative aspect-square overflow-hidden rounded-lg bg-slate-100 shadow-sm hover:shadow-xl transition-all duration-500"
+        >
+          <a [href]="photo.url" target="_blank" class="block w-full h-full">
+            <img
+              [src]="photo.url"
+              [alt]="photo.title"
+              loading="lazy"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+
+            <div
+              class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3"
+            >
+              <p class="text-white text-[10px] leading-tight line-clamp-2 font-medium">
+                {{ photo.title }}
+              </p>
+            </div>
+          </a>
+        </div>
+      } @empty {
+        @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
+          <div class="aspect-square bg-slate-100 animate-pulse rounded-lg"></div>
+        }
+      }
+    </div>
+  </div>
+</div>
