@@ -6,6 +6,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server,
   },
   {
+    path: 'albums/:id',
+    renderMode: RenderMode.Server,
+  },
+  {
     path: 'todos',
     renderMode: RenderMode.Client,
   },

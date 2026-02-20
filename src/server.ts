@@ -134,7 +134,12 @@ app.get('/api/albums/:id/photos', async (req, res) => {
     const response = await fetch(`https://jsonplaceholder.typicode.com/albums/${id}/photos`);
     const data = await response.json();
 
-    res.status(200).json(data);
+    res.status(200).json(
+      data.map((photo: Photo) => ({
+        ...photo,
+        url: `https://picsum.photos/seed/${photo.id}/600/600`,
+      })),
+    );
   } catch (error) {
     console.error('Error fetching photos:', error);
     res.status(500).json({ error: 'Failed to fetch photos' });
