@@ -10,7 +10,7 @@ export class PhotosService {
   private readonly api = '/api/albums';
   private readonly http = inject(HttpClient);
 
-  getPhotos(albumId: number): Observable<Photo[]> {
+  getPhotos(albumId: string): Observable<Photo[]> {
     return this.http.get<Photo[]>(`${this.api}/${albumId}/photos`);
   }
 }
