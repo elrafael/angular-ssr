@@ -43,7 +43,9 @@
             </h2>
           </div>
 
-          <a [routerLink]="['/albums', album.id]" class="absolute inset-0 z-10"></a>
+          <a [routerLink]="['/albums', album.id]" class="absolute inset-0 z-10"
+            ><span class="sr-only">Show photos for {{ album.title }}</span></a
+          >
         </div>
       }
     } @placeholder {
