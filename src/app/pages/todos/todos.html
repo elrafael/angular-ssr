@@ -6,7 +6,7 @@
 
   <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
     @defer (on timer(800ms)) {
-      @for (todo of todos$ | async; track todo.id) {
+      @for (todo of todos | async; track todo.id) {
         <div
           [style.animation-delay]="$index * 50 + 'ms'"
           class="group bg-white p-6 rounded-2xl shadow-sm border border-slate-200 transition-all duration-300 flex flex-col justify-between animate-in fade-in slide-in-from-bottom-4 duration-700 fill-mode-both"

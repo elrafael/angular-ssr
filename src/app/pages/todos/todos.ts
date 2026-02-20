@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class Todos implements OnInit {
   private readonly todosService = inject(TodosService);
-  protected todos$: Observable<Todo[]> = this.todosService.getTodos();
+  protected todos: Observable<Todo[]> = this.todosService.getTodos();
 
   constructor() {
     afterNextRender(() => {
