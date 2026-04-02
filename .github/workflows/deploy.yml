@@ -28,7 +28,7 @@ jobs:
         run: |
           ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-      - name: Deploy API & Webapp
+      - name: Deploy Webapp
         run: |
           ssh $SERVER_USER@${{ secrets.SERVER_IP }} "
             echo ${{ secrets.GHCR_TOKEN }} | docker login $REGISTRY -u elrafael --password-stdin &&
