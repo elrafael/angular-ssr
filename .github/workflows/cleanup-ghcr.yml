@@ -1,0 +1,40 @@
+name: Cleanup GHCR Images - 3 last versions
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to GHCR
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Delete old images (keep last 3)
+        env:
+          GH_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          PACKAGE_NAME=angular-ssr
+          OWNER=${{ github.repository_owner }}
+
+          versions=$(gh api \
+            /users/$OWNER/packages/container/$PACKAGE_NAME/versions \
+            --jq '.[].id')
+
+          keep=$(gh api \
+            /users/$OWNER/packages/container/$PACKAGE_NAME/versions \
+            --jq '.[0:3] | .[].id')
+
+          echo "Keeping versions: $keep"
+
+          for v in $versions; do
+            if echo "$keep" | grep -q "$v"; then
+              echo "Keeping version $v"
+            else
+              echo "Deleting version $v"
+              gh api -X DELETE /users/$OWNER/packages/container/$PACKAGE_NAME/versions/$v
+            fi
+          done

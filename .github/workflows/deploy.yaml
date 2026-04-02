@@ -1,0 +1,38 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    env:
+      SERVER_USER: deploy
+      SERVER_DIR: /srv/angular-ssr
+      WEBAPP_NAME: angular-ssr
+      REGISTRY: ghcr.io
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Deploy API & Webapp
+        run: |
+          ssh $SERVER_USER@${{ secrets.SERVER_IP }} "
+            echo ${{ secrets.GHCR_TOKEN }} | docker login $REGISTRY -u elrafael --password-stdin &&
+            cd $SERVER_DIR &&
+            docker compose pull $WEBAPP_NAME &&
+            docker compose up -d $WEBAPP_NAME
+          "
