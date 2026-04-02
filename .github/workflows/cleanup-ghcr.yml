@@ -1,4 +1,4 @@
-name: Cleanup GHCR Images
+name: Cleanup GHCR Images - 3 last versions
 
 on:
   schedule:
