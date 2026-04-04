@@ -48,6 +48,7 @@ jobs:
           docker build -t $IMAGE_NAME:latest .
 
       - name: Push Docker Image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           IMAGE_NAME=ghcr.io/${{ github.repository }}
 
