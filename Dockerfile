@@ -3,6 +3,7 @@ FROM node:24-alpine AS build
 WORKDIR /app
 
 # Aproveita cache do Docker — só reinstala se package*.json mudar
+COPY package*.json ./
 RUN npm ci
 
 # Copia o código e faz o build de produção
