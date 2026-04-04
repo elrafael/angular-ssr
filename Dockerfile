@@ -1,28 +1,26 @@
-# Estágio 1: Build (Onde a mágica do Angular acontece)
-FROM node:20-alpine AS build
+# Estágio 1: Build
+FROM node:24-alpine AS build
 WORKDIR /app
 
-# Copiamos apenas os ficheiros de dependências primeiro para aproveitar a cache do Docker
+# Aproveita cache do Docker — só reinstala se package*.json mudar
 COPY package*.json ./
 RUN npm ci
 
-# Copiamos o resto do código e fazemos o build
+# Copia o código e faz o build de produção
 COPY . .
 RUN npm run build
 
-# Estágio 2: Runtime (A versão leve que vai para o Azure)
-FROM node:20-alpine
+# Estágio 2: Runtime
+FROM node:24-alpine
 WORKDIR /app
 
-# Copiamos a pasta 'dist' gerada no estágio anterior
-# NOTA: Confirma se o nome da pasta é 'angular-ssr' dentro de dist/
+# Copia apenas os artefactos necessários do estágio de build
 COPY --from=build /app/dist/angular-ssr /app/dist/angular-ssr
 
 # Expomos a porta 4000 que é o padrão do Angular SSR
 EXPOSE 4000
-
-# Variável de ambiente para garantir que o Node sabe que porta usar (opcional, mas boa prática)
 ENV PORT=4000
+ENV NODE_ENV=production
 
-# O comando que inicia o servidor SSR
+# Inicia o servidor Angular SSR
 CMD ["node", "dist/angular-ssr/server/server.mjs"]
