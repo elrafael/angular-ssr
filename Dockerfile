@@ -1,5 +1,5 @@
 # Estágio 1: Build
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 WORKDIR /app
 
 # Aproveita cache do Docker — só reinstala se package*.json mudar
@@ -10,7 +10,7 @@ COPY . .
 RUN npm run build
 
 # Estágio 2: Runtime
-FROM node:22-alpine
+FROM node:24-alpine
 WORKDIR /app
 
 # Copia apenas os artefactos necessários do estágio de build
