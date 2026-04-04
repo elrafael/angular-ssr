@@ -1,19 +1,19 @@
-# name: Enforce develop → main only
+name: Enforce develop → main only
 
-# on:
-#   pull_request:
-#     branches:
-#       - main
+on:
+  pull_request:
+    branches:
+      - main
 
-# jobs:
-#   check-source-branch:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Verify PR source branch
-#         run: |
-#           if [ "${{ github.head_ref }}" != "develop" ]; then
-#             echo "❌ PRs to main only accepted from develop."
-#             echo "Source Branch: ${{ github.head_ref }}"
-#             exit 1
-#           fi
-#           echo "✅ Valid source branch: develop"
+jobs:
+  check-source-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify PR source branch
+        run: |
+          if [ "${{ github.head_ref }}" != "develop" ]; then
+            echo "❌ PRs to main only accepted from develop."
+            echo "Source Branch: ${{ github.head_ref }}"
+            exit 1
+          fi
+          echo "✅ Valid source branch: develop"
