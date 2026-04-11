@@ -1,59 +1,78 @@
-# AngularSsr
+# Angular SSR Portfolio Architecture
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.4.
+[![Quality Check](https://github.com/elrafael/angular-ssr/actions/workflows/quality.yml/badge.svg)](https://github.com/elrafael/angular-ssr/actions/workflows/quality.yml)
+[![Build & Push Image](https://github.com/elrafael/angular-ssr/actions/workflows/build.yml/badge.svg)](https://github.com/elrafael/angular-ssr/actions/workflows/build.yml)
 
-## Development server
+**Live Demo:** [angular-ssr.elrafael.net](https://angular-ssr.elrafael.net)
 
-To start a local development server, run:
+## 🚀 Overview
 
-```bash
-ng serve
-```
+This repository serves as a **Technical Proof of Concept (PoC)** for a modern, high-performance web architecture. It leverages the latest features of **Angular (v21+)** combined with a robust **GitOps** pipeline.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+The goal is to demonstrate a production-ready environment focusing on **SEO (SSR)**, **Reactive Performance (Signals)**, and **Automated Infrastructure (Docker/GitHub Actions)**.
 
-## Code scaffolding
+## 🛠 Tech Stack & Architecture
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Frontend
 
-```bash
-ng generate component component-name
-```
+- **Angular 21:** Utilizing standalone components and the new **Signals** API for granular reactivity.
+- **SSR (Server-Side Rendering):** Optimized for SEO and First Contentful Paint (FCP).
+- **Zoneless Oriented:** Prepared for the future of Angular by reducing Zone.js overhead.
+- **Testing:** Unit testing with **Vitest** and E2E testing with **Playwright**.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### DevOps & Infrastructure (GitOps)
 
-```bash
-ng generate --help
-```
+- **CI/CD:** Orchestrated via **GitHub Actions** with dedicated workflows for:
+  - **Quality Gate:** Automated linting and unit testing with coverage reports.
+  - **Docker Orchestration:** Multi-stage builds for optimized image sizes (Node 24-alpine).
+  - **Automated Deployment:** Continuous Deployment to a **Hetzner VPS** via SSH and Docker Compose.
+- **Reverse Proxy:** Managed by **Traefik** with automatic Let's Encrypt SSL certificates.
+- **Registry:** Images hosted on **GitHub Container Registry (GHCR)**.
 
-## Building
+## 📦 Local Development
 
-To build the project run:
+1. **Install dependencies:**
 
-```bash
-ng build
-```
+   ```bash
+   npm ci
+   ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+2. **Run development server:**
 
-## Running unit tests
+   ```bash
+   npm start
+   ```
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+3. **Build for production:**
+   ```bash
+   npm run build
+   ```
 
-```bash
-ng test
-```
+## 🧪Testing
 
-## Running end-to-end tests
+- **Unit Tests (Vitest):**
 
-For end-to-end (e2e) testing, run:
+  ```bash
+   npm run test
+  ```
 
-```bash
-ng e2e
-```
+- **E2E Tests (Playwright):**
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+  ```bash
+  npm run test:e2e
+  ```
 
-## Additional Resources
+- **Coverage:**
+  ```bash
+  npm run test:ci
+  ```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## ⚙️ Backend & Data Orchestration (BFF)
+
+- **Node.js & Express:** Integrated BFF (Backend-for-Frontend) layer within the SSR engine.
+
+- **Data Enrichment:** Demonstrates server-side orchestration by combining multiple external APIs (e.g., JSONPlaceholder) to deliver enriched data models directly to the frontend.
+
+- **Performance:** Reduces client-side processing and multiple round-trips by handling complex data transformations and parallel fetching (Promise.all) on the server.
+
+- **REST API Endpoints:** Custom endpoints (/api/todos, /api/albums) designed to feed the Angular application with pre-processed, clean data
