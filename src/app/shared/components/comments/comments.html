@@ -1,0 +1,78 @@
+<hr class="border-slate-100 my-8" />
+
+<section>
+  @defer (on hover) {
+    <form (ngSubmit)="submitComment()" [formGroup]="commentForm" class="mb-8">
+      <h2 class="text-xl font-bold text-slate-800 mb-4">Adicionar comentário</h2>
+
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-slate-700 mb-1">User</label>
+        <select
+          id="email"
+          name="email"
+          class="w-full border border-slate-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          formControlName="email"
+        >
+          @for (user of users(); track user.id) {
+            <option [value]="user.name">{{ user.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nome</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="Digite seu nome"
+          class="w-full border border-slate-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          formControlName="name"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="body" class="block text-sm font-medium text-slate-700 mb-1">Comentário</label>
+        <textarea
+          id="body"
+          name="body"
+          rows="4"
+          placeholder="Digite seu comentário"
+          class="w-full border border-slate-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          formControlName="body"
+        ></textarea>
+      </div>
+
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-slate-300 disabled:hover:bg-slate-300 disabled:cursor-not-allowed disabled:opacity-60 disabled:text-slate-500"
+        [disabled]="commentForm.invalid"
+      >
+        Enviar comentário
+      </button>
+    </form>
+    <h2 class="text-xl font-bold text-slate-800 mb-4">Comentários {{ comments().length }}</h2>
+
+    <div class="space-y-4">
+      @for (comment of comments(); track comment.id) {
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+          <p class="font-bold text-sm text-blue-600 mb-1">{{ comment.email }}</p>
+          <p class="text-slate-700">{{ comment.body }}</p>
+        </div>
+      }
+    </div>
+  } @placeholder {
+    <div
+      class="p-4 border-2 border-dashed border-slate-200 rounded-xl text-center text-slate-400 cursor-pointer hover:bg-slate-50 transition-colors"
+    >
+      Passe o rato aqui para carregar os comentários...
+    </div>
+  } @loading {
+    <div class="animate-pulse flex space-x-4">
+      <div class="flex-1 space-y-4 py-1">
+        <div class="h-4 bg-slate-200 rounded w-3/4"></div>
+        <div class="h-4 bg-slate-200 rounded"></div>
+      </div>
+    </div>
+  }
+</section>

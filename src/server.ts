@@ -16,6 +16,8 @@ const browserDistFolder = join(import.meta.dirname, '../browser');
 const app = express();
 const angularApp = new AngularNodeAppEngine();
 
+app.use(express.json());
+
 /**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
@@ -63,6 +65,16 @@ app.get('/api/users/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch user' });
   }
 });
+app.get('/api/users', async (req, res) => {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/users');
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
 app.get('/api/posts/:id/comments', async (req, res) => {
   try {
     const id = req.params['id'];
@@ -96,6 +108,23 @@ app.get('/api/todos', async (req, res) => {
   } catch (error) {
     console.error('Error fetching todos:', error);
     res.status(500).json({ error: 'Failed to fetch todos' });
+  }
+});
+
+app.post('/api/comments', async (req, res) => {
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/comments', {
+      method: 'POST',
+      body: JSON.stringify(req.body),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    });
+    const data = await response.json();
+    res.status(200).json(data);
+  } catch (error) {
+    console.error('Error submitting comment:', error);
+    res.status(500).json({ error: 'Failed to submit comment' });
   }
 });
 

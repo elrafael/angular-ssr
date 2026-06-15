@@ -12,4 +12,8 @@ export class UsersService {
   getUser(id: string) {
     return this.http.get<User>(`${this.api}/${id}`);
   }
+
+  getAllUsers() {
+    return this.http.get<User[]>(this.api);
+  }
 }
