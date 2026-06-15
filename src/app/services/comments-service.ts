@@ -7,10 +7,15 @@ import { Comment } from '../shared/interfaces/comment';
   providedIn: 'root',
 })
 export class CommentsService {
-  private readonly api = '/api/posts/';
+  private readonly apiPosts = '/api/posts/';
+  private readonly apiComments = '/api/comments/';
   private readonly http = inject(HttpClient);
 
   getComments(postId: string): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.api}${postId}/comments`);
+    return this.http.get<Comment[]>(`${this.apiPosts}${postId}/comments`);
+  }
+
+  postComment(comment: Comment): Observable<Comment> {
+    return this.http.post<Comment>(`${this.apiComments}`, comment);
   }
 }
