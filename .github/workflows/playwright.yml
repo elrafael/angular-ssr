@@ -32,7 +32,10 @@ jobs:
 
       - name: Install Playwright Browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps
+        # run: npx playwright install --with-deps
+        run: npx playwright install chromium
+        env:
+          DEBUG: pw:install
 
       - name: Install Playwright OS Dependencies
         if: steps.playwright-cache.outputs.cache-hit == 'true'
