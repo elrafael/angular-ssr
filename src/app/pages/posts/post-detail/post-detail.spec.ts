@@ -12,7 +12,10 @@ describe('PostDetail', () => {
 
   beforeEach(async () => {
     const postsServiceMock = { getPost: () => of({ id: 1, title: 'Test', userId: 1 }) };
-    const usersServiceMock = { getUser: () => of({ id: 1, name: 'User Test' }) };
+    const usersServiceMock = {
+      getUser: () => of({ id: 1, name: 'User Test' }),
+      getAllUsers: () => of([]),
+    };
     const commentsServiceMock = { getComments: () => of([]) };
 
     await TestBed.configureTestingModule({

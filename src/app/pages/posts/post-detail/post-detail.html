@@ -32,34 +32,5 @@
   <p class="text-lg text-slate-700 leading-relaxed mb-8">
     {{ post()?.body }}
   </p>
-
-  <hr class="border-slate-100 my-8" />
-
-  <section>
-    <h2 class="text-xl font-bold text-slate-800 mb-4">Comentários {{ comments()?.length }}</h2>
-
-    @defer (on hover) {
-      <div class="space-y-4">
-        @for (comment of comments(); track comment.id) {
-          <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-            <p class="font-bold text-sm text-blue-600 mb-1">{{ comment.email }}</p>
-            <p class="text-slate-700">{{ comment.body }}</p>
-          </div>
-        }
-      </div>
-    } @placeholder {
-      <div
-        class="p-4 border-2 border-dashed border-slate-200 rounded-xl text-center text-slate-400 cursor-pointer hover:bg-slate-50 transition-colors"
-      >
-        Passe o rato aqui para carregar os comentários...
-      </div>
-    } @loading {
-      <div class="animate-pulse flex space-x-4">
-        <div class="flex-1 space-y-4 py-1">
-          <div class="h-4 bg-slate-200 rounded w-3/4"></div>
-          <div class="h-4 bg-slate-200 rounded"></div>
-        </div>
-      </div>
-    }
-  </section>
+  <app-comments [postId]="id()" />
 </article>
