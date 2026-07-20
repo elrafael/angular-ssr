@@ -14,7 +14,10 @@ import { Photo } from './app/shared/interfaces/photo';
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+const angularApp = new AngularNodeAppEngine({
+  allowedHosts: ['angular-ssr.elrafael.net'],
+  // trustProxyHeaders: ['x-forwarded-host', 'x-forwarded-proto'],
+});
 
 app.use(express.json());
 
