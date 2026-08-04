@@ -61,4 +61,53 @@ describe('Comments', () => {
 
     expect(commentsServiceMock.postComment).toHaveBeenCalled();
   });
+
+  it('renders users in select, shows placeholder initially, enables submit and appends comment on click', async () => {
+    fixture = TestBed.createComponent(Comments);
+    component = fixture.componentInstance;
+
+    fixture.componentRef.setInput('postId', '1');
+
+    // initial render (placeholder should be present before deferred content loads)
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    const placeholder = el.querySelector('section div');
+    expect(placeholder?.textContent).toContain('Passe o rato aqui');
+
+    // simulate hover to trigger @defer content loading
+    placeholder?.dispatchEvent(new Event('mouseenter'));
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    // users should now be rendered in the select options
+    const options = Array.from(el.querySelectorAll('select#email option')) as HTMLOptionElement[];
+    expect(options.length).toBeGreaterThan(0);
+    expect(options[0].textContent).toContain('User Test');
+
+    // submit button disabled when form invalid
+    const submitBtn = el.querySelector('button[type="submit"]') as HTMLButtonElement;
+    expect(submitBtn.disabled).toBe(true);
+
+    // set form values to enable submit
+    component.commentForm.setValue({ name: 'John', email: 'john@example.com', body: 'Nice post' });
+    fixture.detectChanges();
+    expect(submitBtn.disabled).toBe(false);
+
+    // make postComment return a real comment and click the button
+    commentsServiceMock.postComment.mockReturnValueOnce(
+      of({ id: 99, postId: '1', name: 'John', email: 'john@example.com', body: 'Nice post' }),
+    );
+
+    submitBtn.click();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(commentsServiceMock.postComment).toHaveBeenCalled();
+
+    // the new comment should be rendered in the list
+    const commentEmails = Array.from(el.querySelectorAll('.space-y-4 .font-bold')).map((n) =>
+      n.textContent?.trim(),
+    );
+    expect(commentEmails).toContain('john@example.com');
+  });
 });
