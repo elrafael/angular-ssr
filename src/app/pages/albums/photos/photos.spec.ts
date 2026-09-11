@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Photos } from './photos';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { of } from 'rxjs';
 import { PhotosService } from '../../../services/photos-service';
+import { Photos } from './photos';
 
 describe('Photos', () => {
   let component: Photos;
@@ -39,7 +39,7 @@ describe('Photos', () => {
     expect(component.id()).toBe('1');
   });
 
-  it('renders album title, photo count and images when photos exist', () => {
+  it('renders album title, photo count and images when photos exist', async () => {
     const photos = [
       { albumId: 1, id: 11, title: 'First', url: 'https://example.com/1.jpg' },
       { albumId: 1, id: 12, title: 'Second', url: 'https://example.com/2.jpg' },
@@ -49,6 +49,9 @@ describe('Photos', () => {
     mockPhotosService.getPhotos = () => of(response);
 
     fixture.componentRef.setInput('id', '1');
+    fixture.detectChanges();
+
+    await fixture.whenStable();
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement;
