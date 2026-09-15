@@ -70,7 +70,9 @@ describe('Albums', () => {
     await deferBlock.render(DeferBlockState.Complete);
     fixture.detectChanges();
 
-    const albumsValues = (component as unknown as { albums: () => Album[] }).albums();
+    const albumsValues = (
+      component as unknown as { albums: { value: () => Album[] } }
+    ).albums.value();
     expect(albumsValues.length).toBe(2);
 
     const albumTitle = fixture.debugElement.query(By.css('h2')).nativeElement;
