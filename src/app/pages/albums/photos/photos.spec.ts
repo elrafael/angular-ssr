@@ -66,11 +66,14 @@ describe('Photos', () => {
     expect(imgs[0].alt).toBe(photos[0].title);
   });
 
-  it('renders loading skeleton placeholders when there are no photos', () => {
+  it('renders loading skeleton placeholders when there are no photos', async () => {
     const response = { albumTitle: 'Empty Album', photos: [] };
     mockPhotosService.getPhotos = () => of(response);
 
     fixture.componentRef.setInput('id', '2');
+    fixture.detectChanges();
+
+    await fixture.whenStable();
     fixture.detectChanges();
 
     const el: HTMLElement = fixture.nativeElement;
